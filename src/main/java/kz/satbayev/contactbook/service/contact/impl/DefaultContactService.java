@@ -1,15 +1,12 @@
 package kz.satbayev.contactbook.service.contact.impl;
 
-import kz.satbayev.contactbook.entity.AddressEmbedded;
 import kz.satbayev.contactbook.entity.ContactEntity;
-import kz.satbayev.contactbook.exception.ContactException;
+import kz.satbayev.contactbook.exception.ContactNotFoundException;
 import kz.satbayev.contactbook.repo.ContactRepository;
 import kz.satbayev.contactbook.service.contact.ContactService;
-import kz.satbayev.contactbook.service.contact.contactparams.ContactSearchType;
 import kz.satbayev.contactbook.service.contact.contactparams.StrategyDefiner;
-import kz.satbayev.contactbook.service.contact.contactparams.creating.ContactCreationParam;
-import kz.satbayev.contactbook.service.contact.contactparams.searching.ContactFindParam;
-import kz.satbayev.contactbook.service.contact.contactparams.searching.strategy.ContactSearchStrategy;
+import kz.satbayev.contactbook.service.contact.contactparams.ContactCreationParam;
+import kz.satbayev.contactbook.service.contact.contactparams.ContactFindParam;
 import kz.satbayev.contactbook.service.contact.contactparams.ContactUpdateParam;
 import kz.satbayev.contactbook.service.contact.dto.ContactDto;
 import kz.satbayev.contactbook.service.contact.mapper.ContactMapper;
@@ -18,8 +15,6 @@ import kz.satbayev.contactbook.service.contact.model.Contact;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -28,22 +23,15 @@ public class DefaultContactService implements ContactService {
 
     private final ContactRepository contactRepository;
     private final StrategyDefiner strategyDefiner;
+    private final ContactMapper contactMapper;
+    private final ContactDtoMapper contactDtoMapper;
 
     @Override
     public void add(ContactCreationParam param) {
-        var addressEmbedded = new AddressEmbedded()
-                .setCountry(param.getAddress().getCountry())
-                .setCity(param.getAddress().getCity())
-                .setStreet(param.getAddress().getStreet())
-                .setBuilding(param.getAddress().getBuilding())
-                .setApartment(param.getAddress().getApartment())
-                .setIndex(param.getAddress().getIndex());
-
-        var contact = new ContactEntity()
-                .setAddressEmbedded(addressEmbedded)
-                .setEmail(param.getEmail())
-                .setFullName(param.getFullName())
-                .setPhoneNumber(param.getPhoneNumber());
+        if (param == null || param.getAddress() == null) {
+            throw new IllegalArgumentException("param or address is null");
+        }
+        var contact = contactMapper.toContactEntity(param);
 
         contactRepository.save(contact);
     }
@@ -75,23 +63,22 @@ public class DefaultContactService implements ContactService {
 
     @Override
     public ContactDto find(ContactFindParam param) {
-        Contact contact = ContactMapper.toContact(findContactEntity(param));
-        return ContactDtoMapper.toDto(contact);
+        Contact contact = contactMapper.toContact(findContactEntity(param));
+        return contactDtoMapper.toDto(contact);
     }
 
-    private ContactEntity findContactEntity(ContactFindParam param){
+    private ContactEntity findContactEntity(ContactFindParam param) {
         return strategyDefiner.defineStrategy(param)
                 .findContact(param)
-                .orElseThrow(()->new ContactException("contact not found"));
+                .orElseThrow(() -> new ContactNotFoundException("contact not found"));
     }
 
     @Override
     public List<ContactDto> findAllAlphabetically() {
-        return contactRepository.findAll()
+        return contactRepository.findAllByOrderByFullName()
                 .stream()
-                .map(ContactMapper::toContact)
-                .map(ContactDtoMapper::toDto)
-                .sorted(Comparator.comparing(ContactDto::getFullName))
+                .map(contactMapper::toContact)
+                .map(contactDtoMapper::toDto)
                 .toList();
     }
 }

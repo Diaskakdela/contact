@@ -1,13 +1,11 @@
 package kz.satbayev.contactbook.service.contact;
 
 
-import kz.satbayev.contactbook.service.contact.contactparams.creating.ContactCreationParam;
-import kz.satbayev.contactbook.service.contact.contactparams.searching.ContactFindParam;
+import kz.satbayev.contactbook.service.contact.contactparams.ContactCreationParam;
+import kz.satbayev.contactbook.service.contact.contactparams.ContactFindParam;
 import kz.satbayev.contactbook.service.contact.contactparams.ContactUpdateParam;
 import kz.satbayev.contactbook.service.contact.dto.ContactDto;
-import kz.satbayev.contactbook.service.contact.model.Contact;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface ContactService {

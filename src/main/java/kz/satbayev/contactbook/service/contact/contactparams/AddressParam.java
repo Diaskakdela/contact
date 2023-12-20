@@ -5,13 +5,36 @@ import lombok.Setter;
 
 import java.util.Optional;
 
-@Getter
 @Setter
 public class AddressParam {
-    private Optional<String> country;
-    private Optional<String> city;
-    private Optional<String> street;
-    private Optional<String> building;
-    private Optional<String> apartment;
-    private Optional<String> index;
+    private String country;
+    private String city;
+    private String street;
+    private String building;
+    private String apartment;
+    private String index;
+
+    public Optional<String> getCountry() {
+        return Optional.ofNullable(country);
+    }
+
+    public Optional<String> getCity() {
+        return Optional.ofNullable(city);
+    }
+
+    public Optional<String> getStreet() {
+        return Optional.ofNullable(street);
+    }
+
+    public Optional<String> getBuilding() {
+        return Optional.ofNullable(building);
+    }
+
+    public Optional<String> getApartment() {
+        return Optional.ofNullable(apartment);
+    }
+
+    public Optional<String> getIndex() {
+        return Optional.ofNullable(index);
+    }
 }

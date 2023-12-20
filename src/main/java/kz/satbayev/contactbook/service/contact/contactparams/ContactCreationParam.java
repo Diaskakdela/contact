@@ -1,6 +1,5 @@
-package kz.satbayev.contactbook.service.contact.contactparams.creating;
+package kz.satbayev.contactbook.service.contact.contactparams;
 
-import kz.satbayev.contactbook.entity.AddressEmbedded;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +12,8 @@ public class ContactCreationParam {
     private String phoneNumber;
     private String email;
     private AddressCreationParam address;
-    public String getFullName(){
+
+    public String getFullName() {
         return firstName.trim() + " " + lastName.trim();
     }
 }

@@ -1,7 +1,6 @@
-package kz.satbayev.contactbook.service.contact.contactparams.searching;
+package kz.satbayev.contactbook.service.contact.contactparams;
 
 
-import kz.satbayev.contactbook.service.contact.contactparams.ContactSearchType;
 import lombok.Getter;
 
 import static kz.satbayev.contactbook.service.contact.contactparams.ContactSearchType.BY_FULL_NAME;

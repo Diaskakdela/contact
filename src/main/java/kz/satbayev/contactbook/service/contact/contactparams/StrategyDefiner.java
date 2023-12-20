@@ -1,7 +1,5 @@
 package kz.satbayev.contactbook.service.contact.contactparams;
 
-import kz.satbayev.contactbook.service.contact.contactparams.searching.ContactFindParam;
-import kz.satbayev.contactbook.service.contact.contactparams.searching.strategy.ContactSearchStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

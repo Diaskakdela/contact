@@ -1,4 +1,4 @@
-package kz.satbayev.contactbook.service.contact.contactparams.creating;
+package kz.satbayev.contactbook.service.contact.contactparams;
 
 import lombok.Data;
 

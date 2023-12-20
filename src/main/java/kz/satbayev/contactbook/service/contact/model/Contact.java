@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class Contact {
-    private String fullname;
+    private String fullName;
     private String phoneNumber;
     private String email;
     private Address address;
